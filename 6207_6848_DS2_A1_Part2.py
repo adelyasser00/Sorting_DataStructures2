@@ -3,13 +3,16 @@ import random
 import numba
 import numpy as np
 
-# Array generation
+
+# Use numba to speed up array generation, has no effect on sorting algorithms
 @numba.jit(nopython=True)
+# Array generation
 def genArray(size):
     arr = list(range(size))
     for i in range(size):
-        arr[i] = random.randint(0, size*10)
+        arr[i] = random.randint(0, size * 10)
     return arr
+
 
 # _____PART 6 FUNCTIONS_____ #
 def hybridSort(arr, THRESHOLD):
@@ -87,20 +90,24 @@ def merge(arr, left, right):
 
 # _____PART 7 FUNCTIONS_____ #
 def selectk(nums, start, end, rank):
-    if (end == start):
+    if rank <= 1:
+        rank += 1
+    elif rank > len(nums):
+        print('K is out of range for the size!')
         return
-
+    if end == start:
+        return nums[end]
     else:
         # Randomly partition an element
         q = partition(nums, start, end)
         # check if partitioned element is the Kth smallest in array
         k = q - start + 1
-        if rank == k:
-            return
+        if (rank - 1) == k:
+            return nums[q]
         # search in the smaller or larger sub-arrays depending on the position
         # of the desired Kth smallest element with respect to the element we just
         # partitioned.
-        if rank < k:
+        if (rank - 1) < k:
             return selectk(nums, start, q - 1, rank)
         else:
             return selectk(nums, q + 1, end, rank - k)
@@ -140,16 +147,19 @@ print('part 6(Hybrid Sort):')
 test6 = genArray(20)
 test7 = test6.copy()
 print('Unsorted: ' + str(test6))
-hybridSort(test6, 6)
+THRESHOLD = 6
+hybridSort(test6, THRESHOLD)
 print('Sorted: ' + str(test6))
 
 print('_______________________')
 
 print('Part 7(Kth smallest element): ')
+
 print(test7)
-k = 3
-index = k-1
-selectk(test7, 0, len(test7) - 1, index)
-print(k, 'th smallest element is :', test7[index])
+# Kth smallest, K=2: second smallest, K=1: smallest
+# Note: if we put k = 0 or k = 1, it will show smallest
+k = 19
+result = selectk(test7, 0, len(test7) - 1, k + 1)
+print('Kth smallest element ( k=', k, ') is:', result)
 
 # __________End of code__________ #

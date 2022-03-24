@@ -4,12 +4,13 @@ import random
 import numpy as np
 
 
-# Array generation
+# Use numba to speed up array generation, has no effect on sorting algorithms
 @numba.jit(nopython=True)
+# Array generation
 def genArray(size):
     arr = list(range(size))
     for i in range(size):
-        arr[i] = random.randint(1, 1000000)
+        arr[i] = random.randint(0, size * 10)
     return arr
 
 
