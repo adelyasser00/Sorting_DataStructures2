@@ -44,7 +44,7 @@ def partition(arr, first, last):
             arr[unknown], arr[pivot] = arr[pivot], arr[unknown]
         # shift all elements to the right and reduce unknown elements size by 1
         unknown += 1
-        # swap the pivot to its correct place
+    # swap the pivot to its correct place
     arr[first], arr[pivot] = arr[pivot], arr[first]
     return pivot
 
@@ -92,11 +92,13 @@ def merge(arr, left, right):
 def selectionsort(nums):
     n = len(nums)
     for i in range(0, n - 1):
+        # Default first element of unsorted as minimum each iteration
         indxmin = i
         for j in range(i + 1, n):
             if nums[indxmin] > nums[j]:
+                # update minimum index this iteration
                 indxmin = j
-
+        # swap minimum of this iteration to its correct position
         if indxmin != i:
             nums[i], nums[indxmin] = nums[indxmin], nums[i]
 
@@ -108,10 +110,12 @@ def insertionsort(nums):
     for i in range(1, n):
         key = nums[i]
         index = i
+        # keep swapping the key left as long as it is smaller than
+        # the element on its left
         while index > 0 and nums[index - 1] > key:
             nums[index] = nums[index - 1]
             index = index - 1
-
+        # place the saved key in its correct position this iteration
         nums[index] = key
     return nums
 
